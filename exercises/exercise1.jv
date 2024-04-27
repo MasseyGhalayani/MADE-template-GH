@@ -33,6 +33,7 @@ pipeline AirportsPipline {
         "IATA" oftype text,
         "ICAO" oftype text,
         "Latitude" oftype decimal,
+        "Longitude" oftype decimal,
         "Altitude" oftype decimal,
         "Zeitzone" oftype integer,
         "DST" oftype text,
@@ -43,7 +44,7 @@ pipeline AirportsPipline {
 
     block AirportLoader oftype SQLiteLoader {
 		table: "airports";
-		file: "airports.sqlite";
+		file: "./airports.sqlite";
 	}
 
 	
