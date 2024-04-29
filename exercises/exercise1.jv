@@ -1,6 +1,4 @@
 
-
-
 pipeline AirportsPipline {
 
     AirportFileExtractor 
@@ -16,7 +14,7 @@ pipeline AirportsPipline {
 
     
     block AirportFileInterpreter oftype TextFileInterpreter {
-        
+        encoding : "utf8";
     }
 
      block AirportCSVInterpreter oftype CSVInterpreter {
