@@ -62,7 +62,7 @@ pipeline TreesPipline {
 
     block TreesLoader oftype SQLiteLoader {
 		table: "trees";
-		file: "./Trees.sqlite";
+		file: "./trees.sqlite";
 	}
 
 	
