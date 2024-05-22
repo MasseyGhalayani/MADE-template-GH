@@ -20,7 +20,7 @@ By finding important heart disease predictors, the effort will also advance our 
 
 ### Datasource: 
 * Metadata URL: https://data.mendeley.com/datasets/dzz48mvjht/1
-* Data URL: https://data.mendeley.com/datasets/dzz48mvjht/1/files/2ee83017-9af4-4618-b340-b8594accc63f
+* Data URL: https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/5ba56a64-44fc-42ad-92ea-9cb34550e09c
 * Data Type: CSV
 
  
