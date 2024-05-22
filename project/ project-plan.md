@@ -18,13 +18,18 @@ By finding important heart disease predictors, the effort will also advance our 
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource: 
+### Datasource: Cardiovascular Disease Dataset
 * Metadata URL: https://data.mendeley.com/datasets/dzz48mvjht/1
-* Data URL: https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/5ba56a64-44fc-42ad-92ea-9cb34550e09c
+* Data URL: [Download-link](https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/5ba56a64-44fc-42ad-92ea-9cb34550e09c)
 * Data Type: CSV
 
- 
-This dataset includes a binary classification indicating the presence or absence of heart disease together with a number of patient health variables, such as age, gender, kind of chest discomfort, resting blood pressure, serum cholesterol, and more.
+### Datasource: HEART DISEASE DATASET (COMPREHENSIVE)
+* Metadata URL: https://ieee-dataport.org/open-access/heart-disease-dataset-comprehensive
+* Data URL: [Download-link](https://ieee-dataport.s3.amazonaws.com/open/18722/heart_statlog_cleveland_hungary_final.csv?response-content-disposition=attachment%3B%20filename%3D%22heart_statlog_cleveland_hungary_final.csv%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJOHYI4KJCE6Q7MIQ%2F20240522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240522T213841Z&X-Amz-SignedHeaders=Host&X-Amz-Expires=86400&X-Amz-Signature=c7f3b7a060484c65039fb5180beb24817af954f5b56cdbe2e939d3f2930f2883)
+* Data Type: CSV
+
+
+These datasets include a binary classification indicating the presence or absence of heart disease together with a number of patient health variables, such as age, gender, kind of chest discomfort, resting blood pressure, serum cholesterol, and more.
 ## Work Packages
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
