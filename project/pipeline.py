@@ -31,7 +31,6 @@ def pipeline(urls, db_name, table_names):
     df1 = pd.read_csv(os.path.join(data_path, csv_files[0]), encoding='cp1252')
     df2 = pd.read_csv(os.path.join(data_path, csv_files[1]))
 
-    # Store DataFrames into SQLite database
     db_path = os.path.join(data_path, db_name)
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     conn = sqlite3.connect(db_path)
