@@ -1,0 +1,301 @@
+
+pipeline TrainsPipline {
+
+    TrainsFileExtractor
+        -> TrainsFileInterpreter
+        -> TrainsCSVInterpreter
+        -> TrainsRowDeleter
+        -> TrainsColSelector
+        -> QuantityHeaderWriter
+        -> TrainHeaderWriter
+        -> TrainsTableInterpreter
+        -> uppercaseMonths
+        -> TrainsLoader;
+
+
+
+
+    constraint StadtteilConstraint oftype RegexConstraint {
+        regex: /^Furth\-.*$/;
+    }
+    constraint IDConstraint oftype RegexConstraint {
+        regex: /^(\d{1,3}\.\d*)\,\s(\d{1,3}\.\d*)$/;
+    }
+
+
+    valuetype StadtteilType oftype text {
+        constraints: [
+            StadtteilConstraint,
+        ];
+    }
+    valuetype IDType oftype text {
+        constraints: [
+            IDConstraint,
+        ];
+    }
+
+    block TrainsFileExtractor oftype HttpExtractor {
+        url: "https://www-genesis.destatis.de/genesis/downloads/00/tables/46131-0014_00.csv";
+    }
+
+
+    block TrainsFileInterpreter oftype TextFileInterpreter {
+        encoding : "utf8";
+    }
+
+     block TrainsCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    block TrainsRowDeleter oftype RowDeleter {
+            delete: [row 1, row 2, row 3, row 4, row 5, row 6, row 7 ,row 41337, row 41338, row 41339];
+ 
+    }
+
+     block TrainsColSelector oftype CellRangeSelector{
+        select: range A1:AU*;
+    }
+
+    block TrainHeaderWriter oftype CellWriter
+    {
+        at: range A1:E1;
+        write: ["year", "month", "goods_id", "goods_name", "goods_source"];
+    }
+    block QuantityHeaderWriter oftype CellWriter
+    {
+        at: range AT1:AU1;
+        write: [ "abroad", "total"];
+    }
+    valuetype Unsignedinteger oftype integer{
+        constraints: [posetiveDecimal];
+    }
+    constraint posetiveDecimal on decimal:
+       value >= 0 ;
+        
+    valuetype goods_id oftype text{
+        constraints: [StartWithNST7];
+    }
+    constraint StartWithNST7 oftype RegexConstraint
+    {
+        regex: /^NST7-[A-Z 0-9]{3}$/;
+    }
+    
+
+    valuetype GermanMonth oftype text
+    {
+        constraints: [MonthConstraints];
+    }
+    constraint MonthConstraints oftype AllowlistConstraint {
+        allowlist:[
+            'Januar',
+            'Februar',
+            'März',
+            'April',
+            'Mai',
+            'Juni',
+            'Juli',
+            'August',
+            'September',
+            'Oktober',
+            'November',
+            'Dezember'
+        ];
+    }
+
+    block uppercaseMonths oftype MonthUppercaser{}
+
+
+    block TrainsTableInterpreter oftype TableInterpreter {
+    header: true;
+    columns: [
+            "year" oftype Unsignedinteger,
+            "month" oftype GermanMonth,
+            "goods_id" oftype goods_id,
+            "goods_name" oftype text,
+            "goods_source" oftype text, 
+            "abroad" oftype Unsignedinteger,
+            "total" oftype Unsignedinteger,  
+        ];
+    }
+
+    block TrainsLoader oftype SQLiteLoader {
+		table: "goods";
+		file: "./goodsTransportedByTrain.sqlite";
+	}
+
+
+}
+
+    
+    composite blocktype MonthUppercaser {
+
+        input inputName oftype Table;
+        output outputName oftype Table;
+
+
+        inputName 
+        -> ConvertUppercaseJanuar 
+        -> ConvertUppercaseFebruar 
+        -> ConvertUppercaseMarz 
+        -> ConvertUppercaseApril 
+        -> ConvertUppercaseMai 
+        -> ConvertUppercaseJuni 
+        -> ConvertUppercaseJuli 
+        -> ConvertUppercaseAugust 
+        -> ConvertUppercaseSeptember 
+        -> ConvertUppercaseOktober 
+        -> ConvertUppercaseNovember 
+        -> ConvertUppercaseDezember 
+        -> outputName;
+    
+ 
+
+    transform ConvertUppercaseJanuar {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Januar/ with 'JANUAR';
+    }
+
+    block ConvertUppercaseJanuar oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseJanuar;
+    }
+
+    transform ConvertUppercaseFebruar {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Februar/ with 'FEBRUAR';
+    }
+
+    block ConvertUppercaseFebruar oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseFebruar;
+    }
+
+    transform ConvertUppercaseMarz {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /März/ with 'MÄRZ';
+    }
+
+    block ConvertUppercaseMarz oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseMarz;
+    }
+
+    transform ConvertUppercaseApril {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /April/ with 'APRIL';
+    }
+
+    block ConvertUppercaseApril oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseApril;
+    }
+
+    transform ConvertUppercaseMai {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Mai/ with 'MAI';
+    }
+
+    block ConvertUppercaseMai oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseMai;
+    }
+
+    transform ConvertUppercaseJuni {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Juni/ with 'JUNI';
+    }
+
+    block ConvertUppercaseJuni oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseJuni;
+    }
+
+    transform ConvertUppercaseJuli {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Juli/ with 'JULI';
+    }
+
+    block ConvertUppercaseJuli oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseJuli;
+    }
+
+    transform ConvertUppercaseAugust {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /August/ with 'AUGUST';
+    }
+
+    block ConvertUppercaseAugust oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseAugust;
+    }
+
+    transform ConvertUppercaseSeptember {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /September/ with 'SEPTEMBER';
+    }
+
+    block ConvertUppercaseSeptember oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseSeptember;
+    }
+
+    transform ConvertUppercaseOktober {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Oktober/ with 'OKTOBER';
+    }
+
+    block ConvertUppercaseOktober oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseOktober;
+    }
+
+    transform ConvertUppercaseNovember {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /November/ with 'NOVEMBER';
+    }
+
+    block ConvertUppercaseNovember oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseNovember;
+    }
+
+    transform ConvertUppercaseDezember {
+        from inputName oftype text;
+        to outputName oftype text;
+        outputName: inputName replace /Dezember/ with 'DEZEMBER';
+    }
+
+    block ConvertUppercaseDezember oftype TableTransformer {
+        inputColumns: ['month'];
+        outputColumn: 'month';
+        use: ConvertUppercaseDezember;
+    }
+
+   
+    
+
+    
+    }   
