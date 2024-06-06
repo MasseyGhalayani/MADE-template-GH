@@ -40,7 +40,7 @@ pipeline TrainsPipline {
 
 
     block TrainsFileInterpreter oftype TextFileInterpreter {
-        encoding : "utf8";
+        encoding : "latin4";
     }
 
      block TrainsCSVInterpreter oftype CSVInterpreter {
