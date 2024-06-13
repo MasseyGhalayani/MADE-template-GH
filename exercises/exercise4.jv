@@ -62,16 +62,12 @@ pipeline WeatherPipeline {
             "id" oftype PositiveDecimal,
             "producer" oftype text,
             "model" oftype text,
-            "month" oftype decimal,
+            "month" oftype integer,
             "temperature" oftype decimal,
             "battery_temperature" oftype decimal,
         ];
     }
 
-    block WeatherDataLoader oftype SQLiteLoader {
-        table: "temperatures";
-        file: "./temperatures.sqlite";
-    }
 
     block ConvertTemperatureToCelsius oftype TableTransformer {
         inputColumns: ['temperature'];
@@ -89,6 +85,11 @@ pipeline WeatherPipeline {
         from tempCelsius oftype decimal;
         to tempFahrenheit oftype decimal;
         tempFahrenheit: (tempCelsius * 9/5) + 32;
+    }
+
+    block WeatherDataLoader oftype SQLiteLoader {
+        table: "temperatures";
+        file: "./temperatures.sqlite";
     }
 
       
