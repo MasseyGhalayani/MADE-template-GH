@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from io import BytesIO
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-# Kaggle dataset identifiers
+# Kaggle dataset urls
 dataset_1 = "nsidcorg/daily-sea-ice-extent-data"
 dataset_2 = "sevgisarac/temperature-change"
 
