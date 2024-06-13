@@ -68,6 +68,11 @@ pipeline WeatherPipeline {
         ];
     }
 
+   transform CelsiusToFahrenheit {
+        from tempCelsius oftype decimal;
+        to tempFahrenheit oftype decimal;
+        tempFahrenheit: (tempCelsius * 9/5) + 32;
+    }
 
     block ConvertTemperatureToCelsius oftype TableTransformer {
         inputColumns: ['temperature'];
@@ -81,11 +86,7 @@ pipeline WeatherPipeline {
         use: CelsiusToFahrenheit;
     }
 
-    transform CelsiusToFahrenheit {
-        from tempCelsius oftype decimal;
-        to tempFahrenheit oftype decimal;
-        tempFahrenheit: (tempCelsius * 9/5) + 32;
-    }
+ 
 
     block WeatherDataLoader oftype SQLiteLoader {
         table: "temperatures";
